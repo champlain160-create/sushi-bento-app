@@ -22,36 +22,17 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y \
-          build-essential git python3-dev \
-          ffmpeg libsdl2-dev libsdl2-image-dev \
-          libsdl2-mixer-dev libsdl2-ttf-dev \
-          libportmidi-dev libswscale-dev \
-          libavformat-dev libavcodec-dev \
-          zlib1g-dev libgstreamer1.0-dev \
-          libgstreamer-plugins-base1.0-dev \
-          libjpeg-dev libpng-dev libtiff-dev \
-          libopenal-dev libpulse-dev libvorbis-dev \
-          libxcb1-dev libxcb-shm0-dev \
-          libxcb-xv0-dev libxcb-keysyms1-dev \
-          libxcb-randr0-dev libxcb-shape0-dev \
-          libxcb-sync-dev libxcb-xfixes0-dev \
-          libxcb-dri3-dev libxcb-util-dev \
-          libx11-dev libxext-dev libxrender-dev \
-          libxcomposite-dev libxdamage-dev \
-          libxfixes-dev libxcursor-dev libxi-dev \
-          libxinerama-dev libxrandr-dev \
-          libxtst-dev libxss-dev libxvmc-dev \
-          libxxf86vm-dev libasound2-dev \
-          libpulse-dev libudev-dev \
-          libusb-1.0-0-dev libmtdev-dev \
-          libgl1-mesa-dev openjdk-17-jdk \
-          unzip autoconf libtool cmake pkg-config
+        sudo apt install -y build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libjpeg-dev libpng-dev libtiff-dev libopenal-dev libpulse-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xv0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-dri3-dev libxcb-util-dev libx11-dev libxext-dev libxrender-dev libxcomposite-dev libxdamage-dev libxfixes-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxtst-dev libxss-dev libxvmc-dev libxxf86vm-dev libasound2-dev libpulse-dev libudev-dev libusb-1.0-0-dev libmtdev-dev libgl1-mesa-dev openjdk-17-jdk unzip autoconf libtool cmake pkg-config
 
     - name: Install Buildozer
       run: |
         pip install --upgrade pip
         pip install buildozer cython
+
+    - name: Accept Android SDK licenses
+      run: |
+        mkdir -p ~/.android
+        echo "count=0" > ~/.android/repositories.cfg
 
     - name: Create buildozer.spec
       run: |
@@ -70,9 +51,6 @@ jobs:
         sed -i '/source.dir = .*/a source.include_exts = py,png,jpg,kv,atlas' buildozer.spec
 
     - name: Build APK
-      env:
-        ANDROID_HOME: /usr/local/lib/android/sdk
-        ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/27.3.13750724
       run: |
         yes | buildozer android debug
 
