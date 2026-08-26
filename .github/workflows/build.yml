@@ -53,7 +53,21 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython
 
-    - name: Create buildozer.spec
+    - name:- name: Create buildozer.spec
+  run: |
+    buildozer init
+    sed -i 's/title = My Application/title = 寿司餐盒管理系统/' buildozer.spec
+    sed -i 's/package.name = myapp/package.name = sushibento/' buildozer.spec
+    sed -i 's/package.domain = org.test/package.domain = com.sushi/' buildozer.spec
+    sed -i 's/version = 0.1/version = 1.0.0/' buildozer.spec
+    sed -i 's/# android.ndk = 23b/android.ndk = 23c/' buildozer.spec
+    sed -i 's/# android.sdk = 30/android.sdk = 33/' buildozer.spec
+    sed -i 's/# android.api = 30/android.api = 33/' buildozer.spec
+    sed -i 's/# android.minapi = 21/android.minapi = 21/' buildozer.spec
+    sed -i 's/# android.permissions =/android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA/' buildozer.spec
+    sed -i 's/# requirements = python3,kivy/requirements = python3,kivy==2.2.1/' buildozer.spec
+    sed -i '/source.include_exts/d' buildozer.spec
+    sed -i '/source.dir = .*/a source.include_exts = py,png,jpg,kv,atlas' buildozer.spec
       run: |
         buildozer init
         sed -i 's/title = My Application/title = 寿司餐盒管理系统/' buildozer.spec
@@ -66,8 +80,8 @@ jobs:
         sed -i 's/# android.minapi = 21/android.minapi = 21/' buildozer.spec
         sed -i 's/# android.permissions =/android.permissions = INTERNET, WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA/' buildozer.spec
         sed -i 's/# requirements = python3,kivy/requirements = python3,kivy==2.2.1/' buildozer.spec
-        sed -i '/source.dir = .*/a source.include_exts = py,png,jpg,kv,atlas' buildozer.spec
-
+       sed -i '/source.include_exts/d' buildozer.spec
+sed -i '/source.dir = .*/a source.include_exts = py,png,jpg,kv,atlas' buildozer.spec
     - name: Build APK
       run: |
         buildozer android debug
