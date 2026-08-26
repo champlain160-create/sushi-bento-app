@@ -21,7 +21,7 @@ jobs:
         python-version: '3.10'
 
     - name: Install system dependencies
-      run: |Accept Android SDK licenses
+      run: |
         sudo apt update
         sudo apt install -y \
           build-essential git python3-dev \
@@ -53,6 +53,12 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install buildozer cython
+
+    - name: Accept Android SDK licenses
+      run: |
+        mkdir -p ~/.android
+        echo "count=0" > ~/.android/repositories.cfg
+        yes | sdkmanager --licenses 2>/dev/null || true
 
     - name: Create buildozer.spec
       run: |
